@@ -24,7 +24,7 @@ Câblage Module Arduino --> Module ethernet :
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-#define   UDPMessagingPort    9999          // Selection du port UDP
+#define   UDPMessagingPort    8888          // Selection du port UDP
 
 EthernetUDP Udp;
 
@@ -39,18 +39,21 @@ void setup(){
   }
 
   // Vérifie si le module est bien connecté 
-  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+  /*if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     Serial.println("Le module ethernet n'a pas été trouvé ");
     while (true) {
       delay(1); // ne fait rien, bloque le programme dans une boucle 
     }
-  }
+  }*/
   if (Ethernet.linkStatus() == LinkOFF) {
     Serial.println("Pas de câble ethernet trouvé");
   }
+
+  Serial.println("Câble ethernet trouvé");
   
   Ethernet.begin(mac,ip);                    // Initialise l'ethernet avec l'adresse IP et l'adresse MAC définient.
-  while(!Udp.begin(UDPMessagingPort)){}      // Initialise l'UDP
+  Serial.println("Adresse IP et MAC configurées");
+  Udp.begin(UDPMessagingPort);      // Initialise l'UDP
   delay(100);                                // On attend un petit peu pour être sûr que tout au eu le temps de démarrer 
 
   Serial.print("connecté à : ");
