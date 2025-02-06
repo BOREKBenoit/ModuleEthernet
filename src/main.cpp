@@ -24,15 +24,21 @@ Câblage Module Arduino --> Module ethernet :
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
-#define   UDPMessagingPort    8888          // Selection du port UDP
+#define   UDPMessagingPort    123          // Selection du port UDP
+
+// buffers for receiving and sending data
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  // buffer to hold incoming packet,
+char ReplyBuffer[] = "acknowledged";        // a string to send back
 
 EthernetUDP Udp;
 
 void setup(){
+  Ethernet.init(53);
   Serial.begin(9600);                     //Initialise le moniteur série à 9600 Bauds.
-  
+  SPI.begin;
+
   byte mac[] = { 0x0a, 0x00, 0x27, 0x00, 0x00, 0x10 };    //Adresse MAC du PC  (sur mon partage de connection)
-  byte ip[] = { 10, 186, 203, 64 };                       //Adresse IP du PC 
+  IPAddress ip( 10, 186, 203, 64 );                       //Adresse IP du PC 
 
   while (!Serial) {
     ; // Met en pause le programme le temps que la connection série soit établie 
@@ -45,17 +51,22 @@ void setup(){
       delay(1); // ne fait rien, bloque le programme dans une boucle 
     }
   }*/
+  
+
   if (Ethernet.linkStatus() == LinkOFF) {
     Serial.println("Pas de câble ethernet trouvé");
   }
 
   Serial.println("Câble ethernet trouvé");
   
+
+
   Ethernet.begin(mac,ip);                    // Initialise l'ethernet avec l'adresse IP et l'adresse MAC définient.
   Serial.println("Adresse IP et MAC configurées");
-  Udp.begin(UDPMessagingPort);      // Initialise l'UDP
+  Udp.begin(UDPMessagingPort);               // Initialise l'UDP
   delay(100);                                // On attend un petit peu pour être sûr que tout au eu le temps de démarrer 
 
+  Serial.println(Udp.remoteIP());       //pour le test
   Serial.print("connecté à : ");
   IPAddress remote = Udp.remoteIP();
     for (int i=0; i < 4; i++) {
