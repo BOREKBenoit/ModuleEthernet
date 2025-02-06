@@ -39,18 +39,24 @@ void setup(){
 
   byte mac[] = { 0x0a, 0x00, 0x27, 0x00, 0x00, 0x10 };    //Adresse MAC du PC  (sur mon partage de connection)
   IPAddress ip( 10, 186, 203, 64 );                       //Adresse IP du PC 
+  byte gateway[] = {10,186,203,254};
+  byte subnet[] = {255,255,255,0};
+
+  Ethernet.begin(mac, ip, gateway, subnet);
 
   while (!Serial) {
     ; // Met en pause le programme le temps que la connection série soit établie 
   }
 
   // Vérifie si le module est bien connecté 
-  /*if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     Serial.println("Le module ethernet n'a pas été trouvé ");
     while (true) {
       delay(1); // ne fait rien, bloque le programme dans une boucle 
     }
-  }*/
+  }
+  Serial.println("Module détecté");
+  Serial.println(Ethernet.hardwareStatus());
   
 
   if (Ethernet.linkStatus() == LinkOFF) {
