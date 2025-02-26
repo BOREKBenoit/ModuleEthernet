@@ -26,29 +26,29 @@ Câblage Module Arduino --> Module ethernet :
 
 #define   UDPMessagingPort    123          // Selection du port UDP
 
-// buffers for receiving and sending data
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  // buffer to hold incoming packet,
-char ReplyBuffer[] = "acknowledged";        // a string to send back
+// Configuration des buffers pour envoyer et recevoir de la data
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];  
+char ReplyBuffer[] = "acknowledged";        
 
 EthernetUDP Udp;
 
 void setup(){
-  Ethernet.init(53);
+  Ethernet.init(53);                      //On configure le port 53 de la carte Arduino (CS) pour la communication ethernet 
   Serial.begin(9600);                     //Initialise le moniteur série à 9600 Bauds.
   SPI.begin;
 
   byte mac[] = { 0x0a, 0x00, 0x27, 0x00, 0x00, 0x10 };    //Adresse MAC du PC  (sur mon partage de connection)
   IPAddress ip( 10, 186, 203, 64 );                       //Adresse IP du PC 
-  byte gateway[] = {10,186,203,254};
-  byte subnet[] = {255,255,255,0};
+  byte gateway[] = {10,186,203,254};                      //Passerelle  
+  byte subnet[] = {255,255,255,0};                        //Sous-réseau
 
-  Ethernet.begin(mac, ip, gateway, subnet);
+  Ethernet.begin(mac, ip, gateway, subnet);               //Initialisation du protocole ethernet 
 
   while (!Serial) {
     ; // Met en pause le programme le temps que la connection série soit établie 
   }
 
-  // Vérifie si le module est bien connecté 
+  // Vérifie si le module est bien connecté                                           La détection du module ne fonctionnant par corréctement, cette partie reste en commentaire pour utiliser la suite du programme 
   /*if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     Serial.println("Le module ethernet n'a pas été trouvé ");
     while (true) {
@@ -60,7 +60,7 @@ void setup(){
   Serial.println("Module détecté");
   
   
-
+  //Indique à l'utilisateur si le câble est bien connecté 
   if (Ethernet.linkStatus() == LinkOFF) {
     Serial.println("Pas de câble ethernet trouvé");
   }
@@ -74,7 +74,7 @@ void setup(){
   Udp.begin(UDPMessagingPort);               // Initialise l'UDP
   delay(100);                                // On attend un petit peu pour être sûr que tout au eu le temps de démarrer 
 
-  Serial.println(Udp.remoteIP());       //pour le test
+  Serial.println(Udp.remoteIP());       //Partie destinnée pour les tests
   Serial.print("connecté à : ");
   IPAddress remote = Udp.remoteIP();
     for (int i=0; i < 4; i++) {
@@ -88,6 +88,7 @@ void setup(){
 
 }
 
+//Pas de loop pour ne faire tourner le programme qu'une seule fois 
 void loop() {
 
 }
