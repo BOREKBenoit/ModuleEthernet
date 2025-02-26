@@ -49,14 +49,16 @@ void setup(){
   }
 
   // Vérifie si le module est bien connecté 
-  if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+  /*if (Ethernet.hardwareStatus() == EthernetNoHardware) {
     Serial.println("Le module ethernet n'a pas été trouvé ");
     while (true) {
       delay(1); // ne fait rien, bloque le programme dans une boucle 
     }
   }
-  Serial.println("Module détecté");
+  */
   Serial.println(Ethernet.hardwareStatus());
+  Serial.println("Module détecté");
+  
   
 
   if (Ethernet.linkStatus() == LinkOFF) {
